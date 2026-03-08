@@ -65,7 +65,7 @@ struct AddProjectView: View {
                 }
                 .padding()
             }
-            .navigationTitle("Add Project")
+            .navigationTitle("Add Project Pushed")
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") { dismiss() }
