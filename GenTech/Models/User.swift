@@ -21,4 +21,9 @@ struct AppUser: Codable, Identifiable {
     var contactNumber: String
     var email: String
     var role: SignupRole
+    
+    //current update 
+    var credits: Double?
+    var isPremium: Bool?
+
 }

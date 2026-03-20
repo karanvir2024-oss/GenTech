@@ -14,7 +14,7 @@ class AuthService {
     
     private init() {}
     
-    // MARK: - Register User
+    // Register User
     func registerUser(email: String, password: String, completion: @escaping (Result<FirebaseAuth.User, Error>) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
@@ -28,7 +28,7 @@ class AuthService {
         }
     }
     
-    // MARK: - Login User
+    // Login User
     func loginUser(email: String, password: String, completion: @escaping (Result<FirebaseAuth.User, Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
@@ -42,7 +42,7 @@ class AuthService {
         }
     }
     
-    // MARK: - Logout
+    // Logout
     func signOut() throws {
         try Auth.auth().signOut()
     }

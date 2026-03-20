@@ -27,7 +27,7 @@ struct AddProjectView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     
-                    // MARK: Image Picker
+                    // Image Picker
                     PhotosPicker(
                         selection: $selectedItem,
                         matching: .images,

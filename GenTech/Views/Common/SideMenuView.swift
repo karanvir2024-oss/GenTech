@@ -54,5 +54,7 @@ struct SideMenuView: View {
             .foregroundColor(.red)
         }
         .navigationTitle("Menu")
+        .navigationBarBackButtonHidden(true)
+
     }
 }

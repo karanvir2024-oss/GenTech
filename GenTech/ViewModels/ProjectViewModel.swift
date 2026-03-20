@@ -20,7 +20,7 @@ class ProjectViewModel: ObservableObject {
     
     private let db = Firestore.firestore()
     
-    // MARK: - Fetch Projects
+    // Fetch Projects
     func fetchProjects(role: SignupRole, onlyOwn: Bool = false) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
 
@@ -52,7 +52,7 @@ class ProjectViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Add Project
+    // Add Projects
     func addProject(title: String,
                     description: String,
                     fundNeeded: Double = 0,
@@ -81,7 +81,7 @@ class ProjectViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Upload Image
+    // Upload Image
     private func uploadImage(_ image: UIImage,
                              completion: @escaping (String?) -> Void) {
         
@@ -105,7 +105,7 @@ class ProjectViewModel: ObservableObject {
         }
     }
     
-    // MARK: - Save Project
+    // Save Project
     private func saveProject(title: String,
                              description: String,
                              fundNeeded: Double,

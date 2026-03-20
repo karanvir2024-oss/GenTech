@@ -53,6 +53,7 @@ struct ProjectsListView: View {
             }
         }
         .navigationTitle(filterOwnProjects ? "My Projects" : "Projects")
+       // .navigationBarBackButtonHidden(true)
         .toolbar {
             if filterOwnProjects && !vm.projects.isEmpty {
                 ToolbarItem(placement: .navigationBarTrailing) {
