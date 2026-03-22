@@ -32,7 +32,7 @@ struct ChatView: View {
             .padding()
         }
         .navigationTitle("Chat")
-       // .navigationBarBackButtonHidden(true)
+        .navigationBarBackButtonHidden(false)
 
     }
 }
