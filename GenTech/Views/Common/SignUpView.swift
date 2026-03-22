@@ -104,13 +104,13 @@ struct SignUpView: View {
             Spacer()
             
             // After successfull signup navigation
-            NavigationLink(
-                destination: authVM.userRole == .investor
-                    ? AnyView(InvestorMainView())
-                    : AnyView(EntrepreneurDashboard()),
-                isActive: $authVM.isLoggedIn,
-                label: { EmptyView() }
-            )
+//            NavigationLink(
+//                destination: authVM.userRole == .investor
+//                    ? AnyView(InvestorMainView())
+//                    : AnyView(EntrepreneurDashboard()),
+//                isActive: $authVM.isLoggedIn,
+//                label: { EmptyView() }
+//            )
         }
         .padding(.top, 30)
         .onReceive(authVM.$errorMessage) { newValue in

@@ -28,7 +28,7 @@ struct RoleBasedView: View {
         }
         .navigationBarBackButtonHidden(true)
         // Thias will show system back button
-        .navigationBarTitle("Dashboard", displayMode: .inline)
+        //.navigationBarTitle("Dashboard", displayMode: .inline)
     }
 }
 

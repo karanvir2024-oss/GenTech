@@ -5,13 +5,33 @@
 //  Created by Karanvir Singh on 2026-02-18.
 //
 
+//import SwiftUI
+//import Firebase
+//
+//@main
+//struct GenTechApp: App {
+//    
+//    @StateObject var authVM = AuthViewModel() 
+//    
+//    init() {
+//        FirebaseApp.configure()
+//    }
+//    
+//    var body: some Scene {
+//        WindowGroup {
+//            HomeView()
+//                .environmentObject(authVM)
+//        }
+//    }
+//}
+
 import SwiftUI
 import Firebase
 
 @main
 struct GenTechApp: App {
     
-    @StateObject var authVM = AuthViewModel() 
+    @StateObject var authVM = AuthViewModel()
     
     init() {
         FirebaseApp.configure()
@@ -19,7 +39,7 @@ struct GenTechApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            AppRouter() // ✅ THIS IS THE FIX
                 .environmentObject(authVM)
         }
     }

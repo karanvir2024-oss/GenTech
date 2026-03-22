@@ -37,7 +37,8 @@ struct HomeView: View {
                     
                     // Login Button
                     NavigationLink(destination: LoginView()
-                        .navigationBarBackButtonHidden(true)) {
+                        .navigationBarBackButtonHidden(true)
+                    ) {
                         Text("Login")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -49,7 +50,8 @@ struct HomeView: View {
                     
                     // Signup Button
                     NavigationLink(destination: SignUpView()
-                        .navigationBarBackButtonHidden(true)) {
+                        .navigationBarBackButtonHidden(true)
+                    ) {
                         Text("Sign Up")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
@@ -73,4 +75,5 @@ struct HomeView_Previews: PreviewProvider {
         HomeView()
     }
 }
+
 
