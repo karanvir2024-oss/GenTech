@@ -2,26 +2,26 @@
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import FirebaseStorage
 import Combine
+import UIKit
 
 @MainActor
 class AuthViewModel: ObservableObject {
     
     @Published var currentUser: AppUser?
     @Published var userRole: SignupRole?
-    
-    // store role before logout
     @Published var lastRole: SignupRole?
-    
     @Published var isLoggedIn: Bool = false
     @Published var errorMessage: String = ""
-    
-    // Default credits
     @Published var credits: Double = 500
+    
+    //Profile Image
+    @Published var profileImage: UIImage?
     
     private let db = Firestore.firestore()
     
-    // Computed properties
+    //Computed
     var userName: String {
         guard let user = currentUser else { return "User" }
         return "\(user.firstName) \(user.lastName)"
@@ -35,7 +35,7 @@ class AuthViewModel: ObservableObject {
         userRole?.rawValue.capitalized ?? ""
     }
     
-    // MARK: - Signup
+    //Signup
     func signUp(firstName: String,
                 lastName: String,
                 contactNumber: String,
@@ -56,7 +56,6 @@ class AuthViewModel: ObservableObject {
                 role: role,
                 credits: 500,
                 isPremium: false
-
             )
             
             try db.collection("users").document(uid).setData(from: user)
@@ -71,7 +70,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    // Login
+    //Login
     func login(email: String, password: String) async {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -85,12 +84,15 @@ class AuthViewModel: ObservableObject {
             self.credits = user.credits ?? 500
             self.isLoggedIn = true
             
+            //Load profile image after login
+            await loadProfileImage()
+            
         } catch {
             self.errorMessage = error.localizedDescription
         }
     }
     
-    // MARK: - Logout
+    //Logout
     func logout() {
         do {
             try Auth.auth().signOut()
@@ -99,13 +101,14 @@ class AuthViewModel: ObservableObject {
             self.userRole = nil
             self.isLoggedIn = false
             self.credits = 500
+            self.profileImage = nil
             
         } catch {
             self.errorMessage = error.localizedDescription
         }
     }
     
-    // MARK: - Update Credits
+    //Update Credits
     func updateCredits(_ newCredits: Double) {
         self.credits = newCredits
         self.currentUser?.credits = newCredits
@@ -113,7 +116,50 @@ class AuthViewModel: ObservableObject {
         if let uid = currentUser?.id {
             db.collection("users").document(uid).updateData([
                 "credits": newCredits
-            ])
+            ]) { error in
+                if let error = error {
+                    print("Failed to update credits:", error.localizedDescription)
+                }
+            }
+        }
+    }
+    
+    //Upload Profile Image
+    func uploadProfileImage(_ image: UIImage) async {
+        guard let uid = Auth.auth().currentUser?.uid,
+              let data = image.jpegData(compressionQuality: 0.5) else { return }
+        
+        let ref = Storage.storage().reference().child("profileImages/\(uid).jpg")
+        
+        do {
+            _ = try await ref.putDataAsync(data, metadata: nil)
+            
+            //instantly update UI
+            await MainActor.run {
+                self.profileImage = image
+            }
+            
+        } catch {
+            print("Upload error:", error.localizedDescription)
+        }
+    }
+    
+    //Load Profile Image
+    func loadProfileImage() async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let ref = Storage.storage().reference().child("profileImages/\(uid).jpg")
+        
+        do {
+            let data = try await ref.data(maxSize: 2 * 1024 * 1024)
+            
+            if let image = UIImage(data: data) {
+                await MainActor.run {
+                    self.profileImage = image
+                }
+            }
+            
+        } catch {
+            print("Load error:", error.localizedDescription)
         }
     }
 }

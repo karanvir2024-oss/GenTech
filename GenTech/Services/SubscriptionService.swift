@@ -5,40 +5,42 @@
 //  Created by Karanvir Singh on 2026-03-08.
 //
 
+
 import Foundation
 import FirebaseFirestore
-import FirebaseAuth
-
-
 
 class SubscriptionService {
-
+    
     static let shared = SubscriptionService()
-
-    func buyPremium(authVM: AuthViewModel, completion: @escaping (Result<Double, Error>) -> Void) {
-
-        guard let user = authVM.currentUser else { return }
-
+    
+    func buyPremium(authVM: AuthViewModel) async throws -> Double {
+        guard let user = authVM.currentUser else {
+            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found"])
+        }
+        
         if user.isPremium == true {
-            completion(.failure(NSError(domain: "", code: 1, userInfo: [
-                NSLocalizedDescriptionKey: "You are already a premium user"
-            ])))
-            return
+            throw NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Already premium"])
         }
-
+        
         if authVM.credits < 250 {
-            completion(.failure(NSError(domain: "", code: 2, userInfo: [
-                NSLocalizedDescriptionKey: "Not enough credits"
-            ])))
-            return
+            throw NSError(domain: "", code: 2, userInfo: [NSLocalizedDescriptionKey: "Not enough credits"])
         }
-
+        
         let newCredits = authVM.credits - 250
-
+        
+        //Update credits
         authVM.updateCredits(newCredits)
-
+        
+        // Update premium locally
         authVM.currentUser?.isPremium = true
-
-        completion(.success(newCredits))
+        
+        //Save premium in Firestore
+        if let uid = authVM.currentUser?.id {
+            try await Firestore.firestore().collection("users").document(uid).updateData([
+                "isPremium": true
+            ])
+        }
+        
+        return newCredits
     }
 }
