@@ -85,7 +85,7 @@ struct AddProjectView: View {
                 .padding(.top, 20)
             }
             .navigationTitle("Add Project")
-            .navigationBarTitleDisplayMode(.inline) // ✅ centered title
+            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button("Cancel") {

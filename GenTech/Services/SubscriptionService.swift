@@ -5,7 +5,6 @@
 //  Created by Karanvir Singh on 2026-03-08.
 //
 
-
 import Foundation
 import FirebaseFirestore
 
@@ -28,13 +27,11 @@ class SubscriptionService {
         
         let newCredits = authVM.credits - 250
         
-        //Update credits
+        // Update credits locally
         authVM.updateCredits(newCredits)
-        
-        // Update premium locally
         authVM.currentUser?.isPremium = true
         
-        //Save premium in Firestore
+        // Update Firestore
         if let uid = authVM.currentUser?.id {
             try await Firestore.firestore().collection("users").document(uid).updateData([
                 "isPremium": true
@@ -44,3 +41,4 @@ class SubscriptionService {
         return newCredits
     }
 }
+

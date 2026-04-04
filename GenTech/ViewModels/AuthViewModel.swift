@@ -1,5 +1,6 @@
-
+ 
 import Foundation
+import SwiftUI
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
@@ -15,13 +16,11 @@ class AuthViewModel: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var errorMessage: String = ""
     @Published var credits: Double = 500
-    
-    //Profile Image
     @Published var profileImage: UIImage?
     
     private let db = Firestore.firestore()
     
-    //Computed
+    //Computed properties
     var userName: String {
         guard let user = currentUser else { return "User" }
         return "\(user.firstName) \(user.lastName)"
@@ -35,14 +34,13 @@ class AuthViewModel: ObservableObject {
         userRole?.rawValue.capitalized ?? ""
     }
     
-    //Signup
+    // Sign Up
     func signUp(firstName: String,
                 lastName: String,
                 contactNumber: String,
                 email: String,
                 password: String,
                 role: SignupRole) async {
-        
         do {
             let result = try await Auth.auth().createUser(withEmail: email, password: password)
             let uid = result.user.uid
@@ -70,7 +68,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    //Login
+    // Login
     func login(email: String, password: String) async {
         do {
             let result = try await Auth.auth().signIn(withEmail: email, password: password)
@@ -84,7 +82,7 @@ class AuthViewModel: ObservableObject {
             self.credits = user.credits ?? 500
             self.isLoggedIn = true
             
-            //Load profile image after login
+            // Load profile image after login
             await loadProfileImage()
             
         } catch {
@@ -96,19 +94,17 @@ class AuthViewModel: ObservableObject {
     func logout() {
         do {
             try Auth.auth().signOut()
-            
             self.currentUser = nil
             self.userRole = nil
             self.isLoggedIn = false
             self.credits = 500
             self.profileImage = nil
-            
         } catch {
             self.errorMessage = error.localizedDescription
         }
     }
     
-    //Update Credits
+    // Update Credits
     func updateCredits(_ newCredits: Double) {
         self.credits = newCredits
         self.currentUser?.credits = newCredits
@@ -124,7 +120,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    //Upload Profile Image
+    // Upload Profile Image
     func uploadProfileImage(_ image: UIImage) async {
         guard let uid = Auth.auth().currentUser?.uid,
               let data = image.jpegData(compressionQuality: 0.5) else { return }
@@ -134,32 +130,29 @@ class AuthViewModel: ObservableObject {
         do {
             _ = try await ref.putDataAsync(data, metadata: nil)
             
-            //instantly update UI
             await MainActor.run {
                 self.profileImage = image
             }
-            
         } catch {
             print("Upload error:", error.localizedDescription)
         }
     }
     
-    //Load Profile Image
+    // Load Profile Image
     func loadProfileImage() async {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         let ref = Storage.storage().reference().child("profileImages/\(uid).jpg")
         
         do {
             let data = try await ref.data(maxSize: 2 * 1024 * 1024)
-            
             if let image = UIImage(data: data) {
                 await MainActor.run {
                     self.profileImage = image
                 }
             }
-            
         } catch {
             print("Load error:", error.localizedDescription)
         }
     }
 }
+

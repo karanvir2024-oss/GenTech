@@ -45,7 +45,7 @@ struct SideMenuView: View {
             }
 
             NavigationLink("Chat") {
-                ChatView()
+                ChatListView()
             }
 
             Button("Logout") {

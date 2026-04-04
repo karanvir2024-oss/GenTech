@@ -17,7 +17,7 @@
 //    
 //    private let db = Firestore.firestore()
 //    
-//    // MARK: - Add Project
+//    //Add Project
 //    func addProject(title: String,
 //                    description: String,
 //                    funds: Double,
@@ -41,7 +41,7 @@
 //        }
 //    }
 //    
-//    // MARK: - Load My Projects
+//    // Load My Projects
 //    func loadProjects(for ownerId: String) {
 //        isLoading = true
 //        

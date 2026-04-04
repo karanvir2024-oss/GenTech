@@ -18,10 +18,10 @@ struct LoginView: View {
     var body: some View {
         VStack(spacing: 30) {
             
-            Text("Login")
-                .font(.largeTitle)
-                .bold()
-            
+//            Text("Login")
+//                .font(.largeTitle)
+//                .bold()
+//            
             TextField("Email", text: $email)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
