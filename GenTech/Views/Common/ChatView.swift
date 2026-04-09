@@ -126,8 +126,8 @@ struct ChatView: View {
             }
             .padding()
         }
-        .navigationTitle("Chat") // ✅ Only navigationTitle
-        .navigationBarTitleDisplayMode(.inline) // Makes it appear like ProfileView
+        .navigationTitle("Chat")
+        .navigationBarTitleDisplayMode(.inline)
         .onAppear {
             vm.listenMessages(conversationId: conversationId)
         }

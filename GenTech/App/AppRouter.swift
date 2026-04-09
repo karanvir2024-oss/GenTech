@@ -35,7 +35,7 @@ struct AppRouter: View {
     @EnvironmentObject var authVM: AuthViewModel
 
     var body: some View {
-        NavigationView { // ✅ only here
+        NavigationView {
             Group {
                 if authVM.isLoggedIn {
                     if authVM.userRole == .entrepreneur {
