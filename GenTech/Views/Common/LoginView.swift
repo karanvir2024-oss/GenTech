@@ -6,11 +6,67 @@
 //
 
 
+//import SwiftUI
+//
+//struct LoginView: View {
+//    
+//    @EnvironmentObject var authVM: AuthViewModel
+//    
+//    @State private var email = ""
+//    @State private var password = ""
+//    
+//    var body: some View {
+//        VStack(spacing: 30) {
+//            
+////            Text("Login")
+////                .font(.largeTitle)
+////                .bold()
+////            
+//            TextField("Email", text: $email)
+//                .keyboardType(.emailAddress)
+//                .autocapitalization(.none)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .padding(.horizontal)
+//            
+//            SecureField("Password", text: $password)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .padding(.horizontal)
+//            
+//            if !authVM.errorMessage.isEmpty {
+//                Text(authVM.errorMessage)
+//                    .foregroundColor(.red)
+//                    .padding(.horizontal)
+//            }
+//            
+//            Button(action: {
+//                Task {
+//                    print("Login button tapped")
+//                    await authVM.login(email: email, password: password)
+//                }
+//            }) {
+//                Text("Login")
+//                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+//                    .padding()
+//                    .background(Color.blue)
+//                    .cornerRadius(10)
+//            }
+//            .padding(.horizontal)
+//            
+//            Spacer()
+//        }
+//        .padding(.top, 50)
+//        .navigationTitle("Login") 
+//        .navigationBarTitleDisplayMode(.inline)
+//    }
+//}
+
 import SwiftUI
 
 struct LoginView: View {
     
     @EnvironmentObject var authVM: AuthViewModel
+    @Environment(\.dismiss) var dismiss   // ✅ ADD THIS
     
     @State private var email = ""
     @State private var password = ""
@@ -18,10 +74,6 @@ struct LoginView: View {
     var body: some View {
         VStack(spacing: 30) {
             
-//            Text("Login")
-//                .font(.largeTitle)
-//                .bold()
-//            
             TextField("Email", text: $email)
                 .keyboardType(.emailAddress)
                 .autocapitalization(.none)
@@ -56,7 +108,18 @@ struct LoginView: View {
             Spacer()
         }
         .padding(.top, 50)
-        .navigationTitle("Login") 
+        .navigationTitle("Login")
         .navigationBarTitleDisplayMode(.inline)
+        
+        //ADD BACK BUTTON
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                }
+            }
+        }
     }
 }

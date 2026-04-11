@@ -128,6 +128,8 @@ struct ChatView: View {
         }
         .navigationTitle("Chat")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        
         .onAppear {
             vm.listenMessages(conversationId: conversationId)
         }
