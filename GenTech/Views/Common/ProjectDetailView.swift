@@ -185,7 +185,7 @@ struct ProjectDetailView: View {
                             }
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.orange)
+                            .background(Color.blue)
                             .foregroundColor(.white)
                             .cornerRadius(15)
                         }

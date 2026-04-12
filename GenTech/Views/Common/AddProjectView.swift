@@ -170,7 +170,7 @@ struct AddProjectView: View {
                                     .padding()
                                     .background(
                                         LinearGradient(
-                                            colors: [.blue, .purple],
+                                            colors: [.blue],
                                             startPoint: .leading,
                                             endPoint: .trailing
                                         )
@@ -205,7 +205,7 @@ struct AddProjectView: View {
                                     .padding()
                                     .background(
                                         LinearGradient(
-                                            colors: [.green, .blue],
+                                            colors: [.green],
                                             startPoint: .leading,
                                             endPoint: .trailing
                                         )

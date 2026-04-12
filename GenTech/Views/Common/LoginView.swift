@@ -152,7 +152,7 @@ struct LoginView: View {
                 
                 Spacer()
                 
-                // 🔥 Logo / Title
+                // 🔥 Title
                 VStack(spacing: 8) {
                     Text("Welcome Back")
                         .font(.largeTitle)
@@ -164,10 +164,9 @@ struct LoginView: View {
                         .font(.subheadline)
                 }
                 
-                // 🧊 Card UI
+                // 🧊 Form Card
                 VStack(spacing: 16) {
                     
-                    // Email
                     TextField("Email", text: $email)
                         .keyboardType(.emailAddress)
                         .autocapitalization(.none)
@@ -177,7 +176,6 @@ struct LoginView: View {
                         .foregroundColor(.white)
                         .placeholderStyle()
                     
-                    // Password
                     SecureField("Password", text: $password)
                         .padding()
                         .background(Color.white.opacity(0.15))
@@ -185,14 +183,12 @@ struct LoginView: View {
                         .foregroundColor(.white)
                         .placeholderStyle()
                     
-                    // Error
                     if !authVM.errorMessage.isEmpty {
                         Text(authVM.errorMessage)
                             .foregroundColor(.red)
                             .font(.caption)
                     }
                     
-                    // Login Button
                     Button {
                         Task {
                             await authVM.login(email: email, password: password)
@@ -204,7 +200,7 @@ struct LoginView: View {
                             .padding()
                             .background(
                                 LinearGradient(
-                                    colors: [.blue, .purple],
+                                    colors: [.blue],
                                     startPoint: .leading,
                                     endPoint: .trailing
                                 )
@@ -219,21 +215,23 @@ struct LoginView: View {
                 .padding(.horizontal)
                 
                 Spacer()
-                
-                // 🔙 Back Button
-                Button {
-                    dismiss()
-                } label: {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                        Text("Back")
-                    }
-                    .foregroundColor(.white.opacity(0.8))
-                }
-                .padding(.bottom, 20)
             }
         }
+       // .navigationTitle("Login")
+        .navigationBarTitleDisplayMode(.inline)
+        
+        // 🔙 NAV BAR BACK BUTTON (TOP LEFT)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                        .font(.system(size: 18, weight: .semibold))
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true) // hides default back button
     }
 }
-
-
