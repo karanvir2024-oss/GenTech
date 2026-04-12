@@ -12,9 +12,12 @@ import FirebaseFirestore
 
 struct Conversation: Identifiable, Codable {
     @DocumentID var id: String?
-    var participants: [String]           
+    var senderName: String?
+    var participants: [String]
     var lastMessage: String?
     var timestamp: Date
+    var senderFirstName: String?
+    var senderLastName: String?
 }
 
 

@@ -13,5 +13,11 @@ struct Project: Identifiable {
     var description: String
     var ownerId: String
     var fundsNeeded: Double
+    //var raisedAmount: Double
     var imageURL: String
+    //var timestamp: Date
+    //var likes: [String]
 }
+
+
+

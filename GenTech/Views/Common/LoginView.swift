@@ -61,65 +61,179 @@
 //    }
 //}
 
+//import SwiftUI
+//
+//struct LoginView: View {
+//    
+//    @EnvironmentObject var authVM: AuthViewModel
+//    @Environment(\.dismiss) var dismiss   // ✅ ADD THIS
+//    
+//    @State private var email = ""
+//    @State private var password = ""
+//    
+//    var body: some View {
+//        VStack(spacing: 30) {
+//            
+//            TextField("Email", text: $email)
+//                .keyboardType(.emailAddress)
+//                .autocapitalization(.none)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .padding(.horizontal)
+//            
+//            SecureField("Password", text: $password)
+//                .textFieldStyle(RoundedBorderTextFieldStyle())
+//                .padding(.horizontal)
+//            
+//            if !authVM.errorMessage.isEmpty {
+//                Text(authVM.errorMessage)
+//                    .foregroundColor(.red)
+//                    .padding(.horizontal)
+//            }
+//            
+//            Button(action: {
+//                Task {
+//                    print("Login button tapped")
+//                    await authVM.login(email: email, password: password)
+//                }
+//            }) {
+//                Text("Login")
+//                    .foregroundColor(.white)
+//                    .frame(maxWidth: .infinity)
+//                    .padding()
+//                    .background(Color.blue)
+//                    .cornerRadius(10)
+//            }
+//            .padding(.horizontal)
+//            
+//            Spacer()
+//        }
+//        .padding(.top, 50)
+//        .navigationTitle("Login")
+//        .navigationBarTitleDisplayMode(.inline)
+//        
+//        //ADD BACK BUTTON
+//        .toolbar {
+//            ToolbarItem(placement: .navigationBarLeading) {
+//                Button(action: {
+//                    dismiss()
+//                }) {
+//                    Image(systemName: "chevron.left")
+//                }
+//            }
+//        }
+//    }
+//}
+
+
+
 import SwiftUI
 
 struct LoginView: View {
     
     @EnvironmentObject var authVM: AuthViewModel
-    @Environment(\.dismiss) var dismiss   // ✅ ADD THIS
+    @Environment(\.dismiss) var dismiss
     
     @State private var email = ""
     @State private var password = ""
     
     var body: some View {
-        VStack(spacing: 30) {
-            
-            TextField("Email", text: $email)
-                .keyboardType(.emailAddress)
-                .autocapitalization(.none)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
-            
-            SecureField("Password", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal)
-            
-            if !authVM.errorMessage.isEmpty {
-                Text(authVM.errorMessage)
-                    .foregroundColor(.red)
-                    .padding(.horizontal)
-            }
-            
-            Button(action: {
-                Task {
-                    print("Login button tapped")
-                    await authVM.login(email: email, password: password)
-                }
-            }) {
-                Text("Login")
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-            }
-            .padding(.horizontal)
-            
-            Spacer()
-        }
-        .padding(.top, 50)
-        .navigationTitle("Login")
-        .navigationBarTitleDisplayMode(.inline)
         
-        //ADD BACK BUTTON
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "chevron.left")
+        ZStack {
+            
+            // 🔥 Background Gradient
+            LinearGradient(
+                colors: [.black, .indigo, .purple],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+            .ignoresSafeArea()
+            
+            VStack(spacing: 25) {
+                
+                Spacer()
+                
+                // 🔥 Logo / Title
+                VStack(spacing: 8) {
+                    Text("Welcome Back")
+                        .font(.largeTitle)
+                        .bold()
+                        .foregroundColor(.white)
+                    
+                    Text("Login to continue investing")
+                        .foregroundColor(.white.opacity(0.7))
+                        .font(.subheadline)
                 }
+                
+                // 🧊 Card UI
+                VStack(spacing: 16) {
+                    
+                    // Email
+                    TextField("Email", text: $email)
+                        .keyboardType(.emailAddress)
+                        .autocapitalization(.none)
+                        .padding()
+                        .background(Color.white.opacity(0.15))
+                        .cornerRadius(12)
+                        .foregroundColor(.white)
+                        .placeholderStyle()
+                    
+                    // Password
+                    SecureField("Password", text: $password)
+                        .padding()
+                        .background(Color.white.opacity(0.15))
+                        .cornerRadius(12)
+                        .foregroundColor(.white)
+                        .placeholderStyle()
+                    
+                    // Error
+                    if !authVM.errorMessage.isEmpty {
+                        Text(authVM.errorMessage)
+                            .foregroundColor(.red)
+                            .font(.caption)
+                    }
+                    
+                    // Login Button
+                    Button {
+                        Task {
+                            await authVM.login(email: email, password: password)
+                        }
+                    } label: {
+                        Text("Login")
+                            .fontWeight(.bold)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(
+                                LinearGradient(
+                                    colors: [.blue, .purple],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                            .foregroundColor(.white)
+                            .cornerRadius(14)
+                    }
+                }
+                .padding()
+                .background(.ultraThinMaterial)
+                .cornerRadius(20)
+                .padding(.horizontal)
+                
+                Spacer()
+                
+                // 🔙 Back Button
+                Button {
+                    dismiss()
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
+                    }
+                    .foregroundColor(.white.opacity(0.8))
+                }
+                .padding(.bottom, 20)
             }
         }
     }
 }
+
+

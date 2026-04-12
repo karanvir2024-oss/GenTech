@@ -42,8 +42,8 @@ struct ProjectsListView: View {
                         ForEach(vm.projects) { project in
                             NavigationLink(destination: ProjectDetailView(project: project)
                                             .environmentObject(authVM)) {
-                                ProjectCardView(project: project)
-                                    .frame(height: 200)
+                                                ProjectCardView(project: project)
+                                                .frame(height: 200)
                                     .padding(.horizontal)
                             }
                         }
@@ -77,6 +77,8 @@ struct ProjectsListView: View {
         }
     }
 }
+
+
 
 
 

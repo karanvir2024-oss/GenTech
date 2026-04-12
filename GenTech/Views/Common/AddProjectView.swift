@@ -6,6 +6,106 @@
 //
 
 
+//import SwiftUI
+//
+//struct AddProjectView: View {
+//
+//    @Environment(\.dismiss) var dismiss
+//    
+//    @State private var title: String = ""
+//    @State private var description: String = ""
+//    @State private var fundNeeded: String = ""
+//    @State private var selectedImage: UIImage?
+//    @State private var showImagePicker = false
+//
+//    @ObservedObject var vm: ProjectViewModel
+//    var currentRole: SignupRole
+//
+//    var body: some View {
+//        NavigationView {
+//            ScrollView {
+//                VStack(spacing: 20) {
+//
+//                    TextField("Project Title", text: $title)
+//                        .textFieldStyle(RoundedBorderTextFieldStyle())
+//                        .padding(.horizontal)
+//
+//                    TextField("Description", text: $description)
+//                        .textFieldStyle(RoundedBorderTextFieldStyle())
+//                        .padding(.horizontal)
+//
+//                    TextField("Funds Needed", text: $fundNeeded)
+//                        .keyboardType(.decimalPad)
+//                        .textFieldStyle(RoundedBorderTextFieldStyle())
+//                        .padding(.horizontal)
+//
+//                    Button(action: {
+//                        showImagePicker = true
+//                    }) {
+//                        Text(selectedImage == nil ? "Select Image" : "Change Image")
+//                            .frame(maxWidth: .infinity)
+//                            .padding()
+//                            .background(Color.blue)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(12)
+//                            .padding(.horizontal)
+//                    }
+//
+//                    if let image = selectedImage {
+//                        Image(uiImage: image)
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(height: 150)
+//                            .cornerRadius(12)
+//                            .padding(.horizontal)
+//                    }
+//
+//                    Button(action: {
+//                        let fundDouble = Double(fundNeeded) ?? 0
+//
+//                        vm.addProject(
+//                            title: title,
+//                            description: description,
+//                            fundNeeded: fundDouble,
+//                            image: selectedImage,
+//                            currentRole: currentRole
+//                        )
+//
+//                        dismiss()
+//                    }) {
+//                        Text("Add Project")
+//                            .frame(maxWidth: .infinity)
+//                            .padding()
+//                            .background(Color.green)
+//                            .foregroundColor(.white)
+//                            .cornerRadius(12)
+//                            .padding(.horizontal)
+//                    }
+//                }
+//                .padding(.top, 20)
+//            }
+//            .navigationTitle("Add Project")
+//            .navigationBarTitleDisplayMode(.inline)
+//            .navigationBarBackButtonHidden(true)
+//            .toolbar {
+//                ToolbarItem(placement: .navigationBarLeading) {
+//                    Button(action: {
+//                        dismiss()
+//                    }) {
+//                        Image(systemName: "chevron.left") // ✅ arrow only
+//                    }
+//                }
+//            }
+//            .sheet(isPresented: $showImagePicker) {
+//                ImagePicker(image: $selectedImage)
+//            }
+//        }
+//    }
+//}
+//
+//
+//
+
 import SwiftUI
 
 struct AddProjectView: View {
@@ -23,76 +123,119 @@ struct AddProjectView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 20) {
+            
+            ZStack {
+                
+                // 🔥 SAME BACKGROUND AS LOGIN
+                LinearGradient(
+                    colors: [.black, .indigo, .purple],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
 
-                    TextField("Project Title", text: $title)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                ScrollView {
+                    VStack(spacing: 20) {
+
+                        // 🧊 GLASS CARD CONTAINER
+                        VStack(spacing: 16) {
+
+                            TextField("Project Title", text: $title)
+                                .padding()
+                                .background(Color.white.opacity(0.15))
+                                .cornerRadius(12)
+                                .foregroundColor(.white)
+                                .placeholderStyle()
+
+                            TextField("Description", text: $description)
+                                .padding()
+                                .background(Color.white.opacity(0.15))
+                                .cornerRadius(12)
+                                .foregroundColor(.white)
+                                .placeholderStyle()
+
+                            TextField("Funds Needed", text: $fundNeeded)
+                                .keyboardType(.decimalPad)
+                                .padding()
+                                .background(Color.white.opacity(0.15))
+                                .cornerRadius(12)
+                                .foregroundColor(.white)
+                                .placeholderStyle()
+
+                            Button(action: {
+                                showImagePicker = true
+                            }) {
+                                Text(selectedImage == nil ? "Select Image" : "Change Image")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(
+                                        LinearGradient(
+                                            colors: [.blue, .purple],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .foregroundColor(.white)
+                                    .cornerRadius(12)
+                            }
+
+                            if let image = selectedImage {
+                                Image(uiImage: image)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(height: 150)
+                                    .cornerRadius(12)
+                            }
+
+                            Button(action: {
+                                let fundDouble = Double(fundNeeded) ?? 0
+
+                                vm.addProject(
+                                    title: title,
+                                    description: description,
+                                    fundNeeded: fundDouble,
+                                    image: selectedImage,
+                                    currentRole: currentRole
+                                )
+
+                                dismiss()
+                            }) {
+                                Text("Add Project")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(
+                                        LinearGradient(
+                                            colors: [.green, .blue],
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .foregroundColor(.white)
+                                    .cornerRadius(12)
+                            }
+                        }
+                        .padding()
+                        .background(.ultraThinMaterial) // ✅ glass effect
+                        .cornerRadius(20)
                         .padding(.horizontal)
 
-                    TextField("Description", text: $description)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
-
-                    TextField("Funds Needed", text: $fundNeeded)
-                        .keyboardType(.decimalPad)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding(.horizontal)
-
-                    Button(action: {
-                        showImagePicker = true
-                    }) {
-                        Text(selectedImage == nil ? "Select Image" : "Change Image")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .padding(.horizontal)
+                        Spacer()
                     }
-
-                    if let image = selectedImage {
-                        Image(uiImage: image)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: 150)
-                            .cornerRadius(12)
-                            .padding(.horizontal)
-                    }
-
-                    Button(action: {
-                        let fundDouble = Double(fundNeeded) ?? 0
-
-                        vm.addProject(
-                            title: title,
-                            description: description,
-                            fundNeeded: fundDouble,
-                            image: selectedImage,
-                            currentRole: currentRole
-                        )
-
-                        dismiss()
-                    }) {
-                        Text("Add Project")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
-                            .cornerRadius(12)
-                            .padding(.horizontal)
-                    }
+                    .padding(.top, 20)
                 }
-                .padding(.top, 20)
             }
             .navigationTitle("Add Project")
             .navigationBarTitleDisplayMode(.inline)
+            
+            // ✅ BACK BUTTON (arrow only)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: {
                         dismiss()
                     }) {
-                        Image(systemName: "chevron.left") // ✅ arrow only
+                        Image(systemName: "chevron.left")
+                            .foregroundColor(.white)
                     }
                 }
             }
@@ -104,82 +247,3 @@ struct AddProjectView: View {
 }
 
 
-
-
-//import SwiftUI
-//import Combine
-//
-//struct AddProjectView: View {
-//
-//    @Environment(\.dismiss) var dismiss
-//
-//    @State private var title = ""
-//    @State private var description = ""
-//    @State private var fundNeeded = ""
-//    @State private var selectedImage: UIImage?
-//    @State private var showImagePicker = false
-//
-//    @ObservedObject var vm: ProjectViewModel
-//    var currentRole: SignupRole
-//
-//    var body: some View {
-//        ScrollView {
-//            VStack(spacing: 20) {
-//
-//                TextField("Project Title", text: $title)
-//                    .textFieldStyle(.roundedBorder)
-//
-//                TextField("Description", text: $description)
-//                    .textFieldStyle(.roundedBorder)
-//
-//                TextField("Funds Needed", text: $fundNeeded)
-//                    .keyboardType(.decimalPad)
-//                    .textFieldStyle(.roundedBorder)
-//
-//                Button("Select Image") {
-//                    showImagePicker = true
-//                }
-//                .padding()
-//                .frame(maxWidth: .infinity)
-//                .background(Color.blue)
-//                .foregroundColor(.white)
-//                .cornerRadius(10)
-//
-//                if let image = selectedImage {
-//                    Image(uiImage: image)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(height: 150)
-//                }
-//
-//                Button("Add Project") {
-//
-//                    print("📸 Image selected:", selectedImage != nil)
-//
-//                    let fund = Double(fundNeeded) ?? 0
-//
-//                    vm.addProject(
-//                        title: title,
-//                        description: description,
-//                        fundNeeded: fund,
-//                        image: selectedImage,
-//                        currentRole: currentRole
-//                    )
-//
-//                    dismiss()
-//                }
-//                .padding()
-//                .frame(maxWidth: .infinity)
-//                .background(Color.green)
-//                .foregroundColor(.white)
-//                .cornerRadius(10)
-//            }
-//            .padding()
-//        }
-//        .navigationTitle("Add Project")
-//        .sheet(isPresented: $showImagePicker) {
-//            ImagePicker(image: $selectedImage)
-//        }
-//    }
-//}
-//
