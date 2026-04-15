@@ -21,6 +21,8 @@ struct AppUser: Codable, Identifiable {
     var email: String
     var role: SignupRole
     var credits: Double?
-    var isPremium: Bool?
+    var isPremium: Bool
+    //var plan: String
+
     var profileImagePath: String?
 }

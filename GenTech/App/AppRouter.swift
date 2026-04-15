@@ -5,27 +5,77 @@
 //  Created by Karanvir Singh on 2026-02-18.
 //
 
-import SwiftUI
-struct AppRouter: View {
-    @EnvironmentObject var authVM: AuthViewModel
+//import SwiftUI
+//struct AppRouter: View {
+//    @EnvironmentObject var authVM: AuthViewModel
+//
+//    var body: some View {
+//        NavigationView {
+//            Group {
+//                if authVM.isLoggedIn {
+//                    if authVM.userRole == .entrepreneur {
+//                        EntrepreneurDashboard()
+//                            .environmentObject(authVM)
+//                    } else {
+//                        InvestorMainView()
+//                            .environmentObject(authVM)
+//                    }
+//                } else {
+//                    HomeView()
+//                        .environmentObject(authVM)
+//                }
+//            }
+//        }
+//        .navigationViewStyle(StackNavigationViewStyle())
+//    }
+//}
 
+import SwiftUI
+
+struct AppRouter: View {
+    
+    @EnvironmentObject var authVM: AuthViewModel
+    
     var body: some View {
-        NavigationView {
-            Group {
-                if authVM.isLoggedIn {
-                    if authVM.userRole == .entrepreneur {
-                        EntrepreneurDashboard()
-                            .environmentObject(authVM)
-                    } else {
-                        InvestorMainView()
-                            .environmentObject(authVM)
-                    }
-                } else {
-                    HomeView()
+        
+        Group {
+            
+            // 🔐 NOT LOGGED IN → AUTH FLOW
+            if !authVM.isLoggedIn {
+                
+                NavigationStack {
+                    HomeView() // or LoginView() if you have it separate
                         .environmentObject(authVM)
                 }
             }
+            
+            // 🔓 LOGGED IN → ROLE BASED APP
+            else {
+                
+                switch authVM.userRole {
+                    
+                case .entrepreneur:
+                    
+                    NavigationStack {
+                        EntrepreneurDashboard()
+                            .environmentObject(authVM)
+                    }
+                    
+                case .investor:
+                    
+                    NavigationStack {
+                        InvestorMainView()
+                            .environmentObject(authVM)
+                    }
+                    
+                default:
+                    
+                    NavigationStack {
+                        HomeView()
+                            .environmentObject(authVM)
+                    }
+                }
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
