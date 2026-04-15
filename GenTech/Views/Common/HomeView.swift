@@ -5,80 +5,6 @@
 //  Created by Karanvir Singh on 2026-02-18.
 //
 
-//import SwiftUI
-//
-//struct HomeView: View {
-//    var body: some View {
-//        NavigationView {
-//            
-//            
-//          //  ZStack {
-//                VStack {
-//                    
-//                    
-//                    Image("GenTech_logo")
-//                        .resizable()
-//                        .scaledToFit()
-//                        .aspectRatio(contentMode: .fill)
-//                    
-//                        .ignoresSafeArea()
-//                    .frame(width: 150, height: 150)
-//                    .padding(.top, 40)
-//
-//
-//                    
-//                    Text("Welcome to Karanvir Singh")
-//                        .font(.largeTitle)
-//                        .bold()
-//                        .multilineTextAlignment(.center)
-//                        .padding(.horizontal)
-//                    
-//                    Spacer()
-//                    
-//                    // Login Button
-//                    NavigationLink(destination: LoginView()
-//                        .navigationBarBackButtonHidden(true)
-//                    ) {
-//                        Text("Login")
-//                            .foregroundColor(.white)
-//                            .frame(maxWidth: .infinity)
-//                            .padding()
-//                            .background(Color.blue)
-//                            .cornerRadius(12)
-//                            .padding(.horizontal)
-//                    }
-//                    
-//                    // Signup Button
-//                    NavigationLink(destination: SignUpView()
-//                        .navigationBarBackButtonHidden(true)
-//                    ) {
-//                        Text("Sign Up")
-//                            .foregroundColor(.white)
-//                            .frame(maxWidth: .infinity)
-//                            .padding()
-//                            .background(Color.green)
-//                            .cornerRadius(12)
-//                            .padding(.horizontal)
-//                    }
-//                    
-//                    Spacer()
-//                }
-//            }
-//        }
-//    }
-//
-////}
-//
-//// Preview 
-//struct HomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        HomeView()
-//    }
-//}
-//
-//
-
-
 import SwiftUI
 
 struct HomeView: View {
@@ -92,7 +18,7 @@ struct HomeView: View {
             
             ZStack {
                 
-                // 🔥 Animated Gradient Background
+                //Animated Gradient Background
                 LinearGradient(
                     colors: [.black, .indigo, .purple, .black],
                     startPoint: animateGradient ? .topLeading : .bottomTrailing,
@@ -105,7 +31,7 @@ struct HomeView: View {
                     
                     Spacer()
                     
-                    // 🔥 Logo + Title
+                    //Logo + Title
                     VStack(spacing: 12) {
                         
                         Image("GenTech_logo")
@@ -131,30 +57,30 @@ struct HomeView: View {
                     
                     Spacer()
                     
-                    // 🔘 Buttons
+                    //Buttons
                     VStack(spacing: 18) {
                         
                         NavigationLink(destination:
                             LoginView()
-                                .navigationBarBackButtonHidden(true)
+                                .navigationBarBackButtonHidden(false) //allow back button
                         ) {
                             AnimatedButton(title: "Login", color: .blue)
                         }
-                        .buttonStyle(PlainButtonStyle())   // ✅ FIXED TAP ISSUE
+                        .buttonStyle(PlainButtonStyle())
                         
                         NavigationLink(destination:
                             SignUpView()
-                                .navigationBarBackButtonHidden(true)
+                                .navigationBarBackButtonHidden(false)
                         ) {
                             AnimatedButton(title: "Sign Up", color: .green)
                         }
-                        .buttonStyle(PlainButtonStyle())   // ✅ FIXED TAP ISSUE
+                        .buttonStyle(PlainButtonStyle())
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 40)
                 }
             }
-            .navigationBarHidden(true)
+            //REMOVED toolbar hiding (this was killing back button)
             .onAppear {
                 animateGradient = true
                 logoFloat = true
@@ -163,7 +89,7 @@ struct HomeView: View {
     }
 }
 
-// 🔘 Clean Button (no gestures, safe for NavigationLink)
+//Clean Button
 struct AnimatedButton: View {
     
     var title: String
@@ -178,7 +104,7 @@ struct AnimatedButton: View {
             .foregroundColor(.white)
             .cornerRadius(18)
             .shadow(color: color.opacity(0.5), radius: 10, x: 0, y: 5)
-            .contentShape(Rectangle()) // ensures full tap area works
+            .contentShape(Rectangle())
     }
 }
 

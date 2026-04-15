@@ -30,7 +30,7 @@ struct SettingsView: View {
         
         ZStack {
             
-            // 🌌 Background
+            //Background
             LinearGradient(
                 colors: [.black, .indigo, .purple],
                 startPoint: .topLeading,
@@ -42,7 +42,7 @@ struct SettingsView: View {
                 
                 VStack(spacing: 20) {
                     
-                    // 👤 PROFILE CARD
+                    //PROFILE CARD
                     VStack(spacing: 12) {
                         
                         Image(systemName: "person.crop.circle.fill")
@@ -69,7 +69,7 @@ struct SettingsView: View {
                     .cornerRadius(20)
                     .padding(.horizontal)
                     
-                    // 🔐 CHANGE PASSWORD
+                    //CHANGE PASSWORD
                     VStack(spacing: 15) {
                         
                         Text("Change Password")
@@ -115,7 +115,7 @@ struct SettingsView: View {
                     .cornerRadius(20)
                     .padding(.horizontal)
                     
-                    // 🚪 LOGOUT
+                    //LOGOUT
                     Button {
                         authVM.logout()
                     } label: {
@@ -143,7 +143,7 @@ struct SettingsView: View {
         }
     }
     
-    // MARK: - CHANGE PASSWORD
+    //CHANGE PASSWORD
     func changePassword() async {
         
         guard isPasswordValid else {

@@ -6,26 +6,6 @@
 //
 
 
-//import SwiftUI
-//import Firebase
-//
-//@main
-//struct GenTechApp: App {
-//    
-//    @StateObject var authVM = AuthViewModel()
-//    
-//    init() {
-//        FirebaseApp.configure()
-//    }
-//    
-//    var body: some Scene {
-//        WindowGroup {
-//            AppRouter()
-//                .environmentObject(authVM)
-//        }
-//    }
-//}
-
 import SwiftUI
 import Firebase
 
@@ -43,8 +23,8 @@ struct GenTechApp: App {
         WindowGroup {
             AppRouter()
                 .environmentObject(authVM)
-                .environmentObject(themeManager) // ✅ HERE
-                .preferredColorScheme(themeManager.colorScheme) // 🌙☀️ HERE
+                .environmentObject(themeManager)
+                .preferredColorScheme(themeManager.colorScheme)
         }
     }
 }

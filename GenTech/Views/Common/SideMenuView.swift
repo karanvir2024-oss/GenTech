@@ -148,7 +148,7 @@ struct SideMenuView: View {
             
             List {
                 
-                // 👤 PROFILE
+                //PROFILE
                 Section {
                     NavigationLink {
                         ProfileView()
@@ -157,7 +157,7 @@ struct SideMenuView: View {
                     }
                 }
                 
-                // 💼 DASHBOARD / ROLE BASED
+                //DASHBOARD ROLE BASED
                 Section {
                     
                     if authVM.userRole == .investor {
@@ -199,7 +199,7 @@ struct SideMenuView: View {
                     }
                 }
                 
-                // 💬 CHAT
+                //CHAT
                 Section {
                     NavigationLink {
                         ChatListView()
@@ -208,14 +208,14 @@ struct SideMenuView: View {
                     }
                 }
                 
-                // 🎨 DARK MODE TOGGLE
+                //DARK MODE TOGGLE
                 Section {
                     Toggle(isOn: $themeManager.isDarkMode) {
                         Label("Dark Mode", systemImage: "moon.fill")
                     }
                 }
                 
-                // 🚪 LOGOUT
+                //LOGOUT
                 Section {
                     Button {
                         authVM.logout()
@@ -228,3 +228,4 @@ struct SideMenuView: View {
         }
     }
 }
+

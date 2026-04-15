@@ -24,7 +24,7 @@ class AuthViewModel: ObservableObject {
     
     private let db = Firestore.firestore()
     
-    // Computed properties
+    // MARK: - Computed
     var userName: String {
         guard let user = currentUser else { return "User" }
         return "\(user.firstName) \(user.lastName)"
@@ -69,6 +69,8 @@ class AuthViewModel: ObservableObject {
             self.userRole = role
             self.credits = user.credits ?? 500
             self.isLoggedIn = true
+            
+            //DEFAULT PLAN
             self.userPlan = .basic
             
         } catch {
@@ -76,7 +78,7 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    // MARK: - LOGIN
+    // MARK: - LOGIN (FIXED PLAN LOGIC)
     func login(email: String, password: String) async {
         do {
             errorMessage = ""
@@ -92,7 +94,14 @@ class AuthViewModel: ObservableObject {
             self.userRole = user.role
             self.credits = user.credits ?? 500
             self.isLoggedIn = true
-            self.userPlan = user.isPremium ? .premium : .basic
+            
+            //FIXED PLAN LOGIC (NO MORE BUG)
+            if user.isPremium == true {
+                self.userPlan = .premium
+            } else {
+                // default fallback
+                self.userPlan = .basic
+            }
             
             await loadProfileImage()
             
@@ -105,20 +114,22 @@ class AuthViewModel: ObservableObject {
     func logout() {
         do {
             try Auth.auth().signOut()
+            
             self.currentUser = nil
             self.userRole = nil
             self.isLoggedIn = false
             self.credits = 500
             self.profileImage = nil
             
-            //User Plan
+            // reset
             self.userPlan = .basic
+            
         } catch {
             self.errorMessage = error.localizedDescription
         }
     }
     
-    // MARK: - RESET PASSWORD ✅ FIXED
+    // MARK: - RESET PASSWORD
     func resetPassword(email: String) async {
         
         let cleanEmail = email.trimmingCharacters(in: .whitespaces)
@@ -192,5 +203,3 @@ class AuthViewModel: ObservableObject {
         }
     }
 }
-
-

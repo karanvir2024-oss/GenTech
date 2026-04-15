@@ -25,7 +25,7 @@ struct AddProjectView: View {
             
             ZStack {
                 
-                // 🔥 SAME BACKGROUND AS LOGIN
+                //SAME BACKGROUND AS LOGIN
                 LinearGradient(
                     colors: [.black, .indigo, .purple],
                     startPoint: .topLeading,
@@ -36,7 +36,7 @@ struct AddProjectView: View {
                 ScrollView {
                     VStack(spacing: 20) {
 
-                        // 🧊 GLASS CARD CONTAINER
+                        //GLASS CARD CONTAINER
                         VStack(spacing: 16) {
 
                             TextField("Project Title", text: $title)
@@ -114,7 +114,7 @@ struct AddProjectView: View {
                             }
                         }
                         .padding()
-                        .background(.ultraThinMaterial) // ✅ glass effect
+                        .background(.ultraThinMaterial) //glass effect
                         .cornerRadius(20)
                         .padding(.horizontal)
 
@@ -126,7 +126,7 @@ struct AddProjectView: View {
             .navigationTitle("Add Project")
             .navigationBarTitleDisplayMode(.inline)
             
-            // ✅ BACK BUTTON (arrow only)
+            //BACK BUTTON (arrow only)
             .navigationBarBackButtonHidden(true)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

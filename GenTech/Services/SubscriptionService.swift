@@ -5,6 +5,7 @@
 //  Created by Karanvir Singh on 2026-03-08.
 //
 
+
 import Foundation
 import FirebaseFirestore
 
@@ -12,35 +13,57 @@ class SubscriptionService {
     
     static let shared = SubscriptionService()
     
-    func buyPremium(authVM: AuthViewModel) async throws -> Double {
+    func buyPlan(authVM: AuthViewModel, plan: Plan) async throws -> Double {
+        
         guard let user = authVM.currentUser else {
-            throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found"])
+            throw NSError(domain: "", code: 0,
+                          userInfo: [NSLocalizedDescriptionKey: "User not found"])
         }
         
-        if user.isPremium == true {
-            throw NSError(domain: "", code: 1, userInfo: [NSLocalizedDescriptionKey: "Already premium"])
+        //Already same plan check (only meaningful for premium)
+        if user.isPremium && plan == .premium {
+            throw NSError(domain: "", code: 1,
+                          userInfo: [NSLocalizedDescriptionKey: "Already premium"])
         }
         
-        if authVM.credits < 250 {
-            throw NSError(domain: "", code: 2, userInfo: [NSLocalizedDescriptionKey: "Not enough credits"])
+        let cost: Double
+        
+        switch plan {
+        case .basic:
+            cost = 50
+        case .pro:
+            cost = 120
+        case .premium:
+            cost = 250
         }
         
-        let newCredits = authVM.credits - 250
+        if authVM.credits < cost {
+            throw NSError(domain: "", code: 2,
+                          userInfo: [NSLocalizedDescriptionKey: "Not enough credits"])
+        }
         
-        // Update credits locally
-        authVM.updateCredits(newCredits)
-        authVM.currentUser?.isPremium = true
+        let newCredits = authVM.credits - cost
         
-        // Update Firestore
+        //UPDATE LOCAL STATE
+        await MainActor.run {
+            authVM.updateCredits(newCredits)
+            authVM.userPlan = plan
+            
+            if plan == .premium {
+                authVM.currentUser?.isPremium = true
+            }
+        }
+        
+        //UPDATE FIRESTORE
         if let uid = authVM.currentUser?.id {
-            try await Firestore.firestore().collection("users").document(uid).updateData([
-                "isPremium": true
-            ])
+            try await Firestore.firestore()
+                .collection("users")
+                .document(uid)
+                .updateData([
+                    "isPremium": plan == .premium
+                ])
         }
         
         return newCredits
     }
 }
-
-
-
